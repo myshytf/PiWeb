@@ -165,3 +165,7 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md). Security guidance is in [`SECURITY.md`
 ## License
 
 MIT © 2026 Dylan Choi
+
+---
+
+🇰🇷 [한국어 문서 보기](README.ko.md)

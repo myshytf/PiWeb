@@ -40,6 +40,7 @@
     "CONTRIBUTING.md",
     "SECURITY.md",
     "README.md",
+    "README.ko.md",
     "LICENSE"
   ],
   "publishConfig": {

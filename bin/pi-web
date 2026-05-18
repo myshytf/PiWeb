@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Portable source-tree launcher for pi-web.
+# The published npm CLI uses dist/cli.js directly via package.json#bin.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+
+if [[ -f "${PROJECT_DIR}/dist/cli.js" && "${PI_WEB_DEV:-0}" != "1" ]]; then
+  exec node "${PROJECT_DIR}/dist/cli.js" "$@"
+fi
+
+if [[ ! -x "${PROJECT_DIR}/node_modules/.bin/tsx" ]]; then
+  echo "pi-web: dependencies are missing. Run 'npm ci' in ${PROJECT_DIR}." >&2
+  exit 1
+fi
+
+if [[ "${PI_WEB_WATCH:-0}" == "1" ]]; then
+  exec "${PROJECT_DIR}/node_modules/.bin/tsx" watch "${PROJECT_DIR}/src/cli.ts" "$@"
+fi
+
+exec "${PROJECT_DIR}/node_modules/.bin/tsx" "${PROJECT_DIR}/src/cli.ts" "$@"

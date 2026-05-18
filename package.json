@@ -1,0 +1,81 @@
+{
+  "name": "pi-web",
+  "version": "0.2.0",
+  "description": "Standalone web interface for the pi coding agent with HTTP, WebSocket, and a mobile-friendly UI.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Dylan Choi",
+  "homepage": "https://github.com/myshytf/PiWeb#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myshytf/PiWeb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/myshytf/PiWeb/issues"
+  },
+  "keywords": [
+    "pi",
+    "coding-agent",
+    "agent-ui",
+    "websocket",
+    "hono",
+    "nextjs",
+    "pwa",
+    "developer-tools"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "./dist/cli.js",
+  "types": "./dist/cli.d.ts",
+  "bin": {
+    "pi-web": "./dist/cli.js"
+  },
+  "files": [
+    "dist/",
+    "frontend/out/",
+    "docs/PUBLISHING.md",
+    "docs/mobile-initial.png",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "dev:watch": "tsx watch src/cli.ts",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "setup:frontend": "npm --prefix frontend ci",
+    "build:backend": "tsc",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/cli.js",
+    "test": "npm run typecheck",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui",
+    "test:server": "npx tsx src/test-server.ts",
+    "pack:dry-run": "npm pack --dry-run --ignore-scripts",
+    "release:check": "npm run build && npm run pack:dry-run",
+    "prepack": "npm run build",
+    "clean": "rm -rf dist frontend/out frontend/.next test-results"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "^0.74.0",
+    "@hono/node-server": "^1.13.0",
+    "hono": "^4.7.0",
+    "web-push": "^3.6.7",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/web-push": "^3.6.4",
+    "@types/ws": "^8.5.0",
+    "tsx": "^4.22.0",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,2 @@
+# npm uses this instead of frontend/.gitignore when packing the root package.
+# Keep empty so package.json#files can include frontend/out/.

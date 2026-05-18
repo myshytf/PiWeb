@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+dist/
+frontend/out/
+frontend/.next/
+*.tsbuildinfo
+
+# Test and automation artifacts
+test-results/
+playwright-report/
+.playwright-cli/
+.playwright-mcp/
+coverage/
+
+# Local pi/runtime state and agent harness notes
+.pi/
+.firecrawl/
+AGENTS.md
+*.log
+*.pid
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Package artifacts
+*.tgz
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/

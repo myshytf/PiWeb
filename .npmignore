@@ -1,0 +1,3 @@
+# npm uses this file instead of .gitignore.
+# Published contents are controlled by package.json#files so gitignored build
+# artifacts such as dist/ and frontend/out/ can still be packed.

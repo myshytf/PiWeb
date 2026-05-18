@@ -38,20 +38,20 @@ PI_WEB_USERNAME=piweb PI_WEB_PASSWORD='use-a-long-random-secret' npm start -- --
 
 ## Install as a CLI package
 
-After the package is published to npm:
+Install the scoped npm package:
 
 ```bash
-npm install -g pi-web
+npm install -g @minyongchoi94/pi-web
 pi-web --cwd /path/to/your/project
 ```
 
 Or run without global install:
 
 ```bash
-npx pi-web --cwd /path/to/your/project
+npx @minyongchoi94/pi-web --cwd /path/to/your/project
 ```
 
-If the `pi-web` npm name is unavailable, rename the package to a scoped name such as `@your-npm-scope/pi-web` before publishing.
+The unscoped `pi-web` npm name is already taken by another maintainer, so this project is published under the `@minyongchoi94` scope.
 
 ## CLI options
 

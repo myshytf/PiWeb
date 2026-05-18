@@ -1,10 +1,16 @@
-# Publishing pi-web
+# Publishing PiWeb
 
 Use this checklist when publishing the project to GitHub and npm.
 
-## 1. Update package identity
+## 1. Package identity
 
-If you do not own the `pi-web` npm name, change `package.json` to a scoped name such as `@your-npm-scope/pi-web` and update the GitHub URLs.
+The unscoped `pi-web` npm package name is already taken by another maintainer, so this project uses the scoped package name:
+
+```text
+@minyongchoi94/pi-web
+```
+
+The CLI binary installed by the package is still named `pi-web`.
 
 ## 2. Verify locally
 
@@ -22,22 +28,21 @@ npm run release:check
 git init -b main
 git add .
 git commit -m "Initial open-source release"
-gh repo create myshytf/PiWeb --public --source=. --remote=origin --push
+git remote add origin https://github.com/myshytf/PiWeb.git
+git push -u origin main
 ```
 
-If you do not use the GitHub CLI, create an empty public repository on github.com and then run:
+Or with the GitHub CLI:
 
 ```bash
-git remote add origin https://github.com/myshytf/PiWeb.git
-git branch -M main
-git push -u origin main
+gh repo create myshytf/PiWeb --public --source=. --remote=origin --push
 ```
 
 ## 4. Create a GitHub release
 
 ```bash
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
 Then create a release from the tag in GitHub's Releases UI.
@@ -45,13 +50,21 @@ Then create a release from the tag in GitHub's Releases UI.
 ## 5. Publish to npm
 
 ```bash
-npm login
+npm whoami
 npm publish --access public
 ```
+
+If npm returns a 2FA/OTP error, use the current one-time password from your npm authenticator app:
+
+```bash
+npm publish --access public --otp=123456
+```
+
+If you publish through CI instead, create a granular npm access token with publish permissions for `@minyongchoi94/pi-web` and enable npm's 2FA bypass option for that token.
 
 After publishing, verify install:
 
 ```bash
-npx pi-web --version
-npx pi-web --help
+npx @minyongchoi94/pi-web --version
+npx @minyongchoi94/pi-web --help
 ```

@@ -1,10 +1,10 @@
 {
-  "name": "pi-web",
-  "version": "0.2.0",
+  "name": "@minyongchoi94/pi-web",
+  "version": "0.2.1",
   "description": "Standalone web interface for the pi coding agent with HTTP, WebSocket, and a mobile-friendly UI.",
   "type": "module",
   "license": "MIT",
-  "author": "Dylan Choi",
+  "author": "Dylan Choi <minyongchoi94@icloud.com>",
   "homepage": "https://github.com/myshytf/PiWeb#readme",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   "main": "./dist/cli.js",
   "types": "./dist/cli.d.ts",
   "bin": {
-    "pi-web": "./dist/cli.js"
+    "pi-web": "dist/cli.js"
   },
   "files": [
     "dist/",

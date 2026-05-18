@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Renamed the npm package to the available scoped name `@minyongchoi94/pi-web`.
+- Added maintainer email metadata and cleaned the package binary path for npm.
+
 ## 0.2.0
 
 - Prepared the project for open-source release and npm packaging.

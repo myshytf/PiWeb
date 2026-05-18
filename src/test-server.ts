@@ -17,7 +17,7 @@ import { createServer as createHttpServer } from "node:http";
 import { configureAuth } from "./auth.js";
 
 const TEST_PORT = Number(process.env.PI_WEB_PORT || process.env.PI_WEB_REMOTE_PORT) || 9876;
-const TEST_HOST = process.env.PI_WEB_HOST || process.env.PI_WEB_REMOTE_HOST || "0.0.0.0";
+const TEST_HOST = process.env.PI_WEB_HOST || process.env.PI_WEB_REMOTE_HOST || "127.0.0.1";
 const TEST_USERNAME = process.env.PI_WEB_USERNAME || "piweb";
 const TEST_PASSWORD = process.env.PI_WEB_PASSWORD || "test-password";
 

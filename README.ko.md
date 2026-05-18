@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-43853d.svg)](package.json)
 
+**언어:** [English](README.md) | 한국어
+
 [`pi` 코딩 에이전트](https://www.npmjs.com/package/@earendil-works/pi-coding-agent)를 위한 모바일 친화적인 웹 인터페이스입니다.  
 HTTP + WebSocket 서버를 실행하고 정적 Next.js UI를 제공하여 브라우저에서 pi 세션을 제어할 수 있습니다.
 
@@ -29,7 +31,13 @@ npm run build
 npm start -- --cwd /path/to/your/project
 ```
 
-서버가 출력하는 URL(보통 `http://localhost:9876`)을 브라우저에서 여세요.
+서버가 출력하는 URL(보통 `http://127.0.0.1:9876`)을 브라우저에서 여세요.
+
+포트, 로그인 정보, 공개 터널을 한 번에 저장하려면 설정 마법사를 실행하세요:
+
+```bash
+npm start -- setup
+```
 
 최초 실행 시 `~/.pi/agent/pi-web-credentials.json` 파일이 생성되고 비밀번호가 한 번 출력됩니다.  
 직접 비밀번호를 설정하려면:
@@ -42,12 +50,14 @@ PI_WEB_USERNAME=piweb PI_WEB_PASSWORD='길고-안전한-비밀번호' npm start 
 
 ```bash
 npm install -g @minyongchoi94/pi-web
+pi-web setup
 pi-web --cwd /path/to/your/project
 ```
 
 또는 글로벌 설치 없이:
 
 ```bash
+npx @minyongchoi94/pi-web setup
 npx @minyongchoi94/pi-web --cwd /path/to/your/project
 ```
 
@@ -62,20 +72,28 @@ pi-web --help
 
 | 옵션 | 환경변수 | 기본값 | 설명 |
 | --- | --- | --- | --- |
+| `setup` | — | — | 포트, 인증 정보, 설정 파일, 터널 자동 시작을 저장하는 설정 마법사 |
+| `config` | — | — | 저장된 설정 파일 출력 |
+| `--config` | `PI_WEB_CONFIG_FILE` | `~/.pi/agent/pi-web-config.json` | 저장된 설정 파일 경로 |
 | `--port` | `PI_WEB_PORT` | `9876` | HTTP/WebSocket 포트 |
-| `--host` | `PI_WEB_HOST` | `0.0.0.0` | 바인드 호스트. 로컬 전용은 `127.0.0.1` |
+| `--host` | `PI_WEB_HOST` | `127.0.0.1` | 바인드 호스트. LAN 접근은 `0.0.0.0` 사용 |
 | `--cwd` | `PI_WEB_CWD` | 현재 디렉토리 | pi 세션의 프로젝트 디렉토리 |
 | `--agent-dir` | `PI_WEB_AGENT_DIR` | `~/.pi/agent` | pi 에이전트 설정/세션 디렉토리 |
+| `--credentials-file` | `PI_WEB_CREDENTIALS_FILE` | `~/.pi/agent/pi-web-credentials.json` | 로그인 인증 파일 |
 | `--username` | `PI_WEB_USERNAME` | `piweb` | 로그인 사용자 이름 |
 | `--password` | `PI_WEB_PASSWORD` | 자동 생성 | 로그인 비밀번호 |
 | `--no-auth` | `PI_WEB_NO_AUTH=1` | 인증 켜짐 | 인증 비활성화. 신뢰할 수 있는 네트워크에서만 사용 |
-| `--https` | — | 꺼짐 | `~/.pi/certs/`의 mkcert 인증서로 HTTPS 제공 |
+| `--tunnel` | `PI_WEB_TUNNEL` | 저장된 설정 / 없음 | `cloudflared` 또는 `ngrok` 공개 터널 시작 |
+| `--no-tunnel` | — | 꺼짐 | 저장된 터널 자동 시작을 이번 실행에서만 비활성화 |
+| `--https` | `PI_WEB_HTTPS=1` | 꺼짐 | `~/.pi/certs/`의 mkcert 인증서로 HTTPS 제공 |
 
 추가 환경변수:
 
 | 환경변수 | 설명 |
 | --- | --- |
 | `PI_WEB_CREDENTIALS_FILE` | 생성된 인증 파일 경로 재정의 |
+| `PI_WEB_CONFIG_FILE` | 저장된 설정 파일 경로 재정의 |
+| `PI_WEB_TUNNEL` | 공개 터널 자동 시작: `cloudflared`, `ngrok`, 또는 `none` |
 | `PI_WEB_ALLOWED_ORIGINS` | API CORS에 허용할 추가 출처 (쉼표 구분) |
 | `PI_WEB_ALLOWED_ROOTS` | 파일 API가 허용하는 파일시스템 루트 (쉼표 구분) |
 | `PI_WEB_TRUST_PROXY=1` | 인증 속도 제한을 위해 리버스 프록시 IP 헤더 신뢰 |
@@ -84,18 +102,42 @@ pi-web --help
 
 `.env.example` 파일을 복사하여 로컬 템플릿으로 사용할 수 있습니다.
 
-## 원격/LAN 접속
+## 원격, LAN, 공개 터널 접속
 
-같은 네트워크의 휴대폰이나 태블릿에서 접속:
+PiWeb은 기본적으로 로컬 전용(`127.0.0.1`)으로 실행됩니다. 같은 네트워크의 휴대폰이나 태블릿에서 접속하려면:
 
 ```bash
 PI_WEB_PASSWORD='길고-안전한-비밀번호' pi-web --host 0.0.0.0 --port 9876 --cwd .
 ```
 
+로컬 바인드 호스트를 바꾸지 않고 인터넷에서 접근 가능한 URL을 만들려면 터널을 사용하세요:
+
+```bash
+pi-web --tunnel cloudflared --cwd .
+```
+
+무료로 쓰기 쉬운 기본 추천 옵션은 `cloudflared` quick tunnel입니다. 필요하면 먼저 설치하세요:
+
+```bash
+brew install cloudflare/cloudflare/cloudflared
+```
+
+ngrok 계정/토큰이 이미 설정되어 있다면 ngrok도 사용할 수 있습니다:
+
+```bash
+pi-web --tunnel ngrok --cwd .
+```
+
+터널 자동 시작을 저장하려면 설정 마법사를 실행하세요:
+
+```bash
+pi-web setup
+```
+
 보안 주의사항:
 
-- 인증을 항상 켜두세요.
-- 인터넷 접근 시 HTTPS, 신뢰할 수 있는 터널, 또는 리버스 프록시를 사용하세요.
+- 공개 터널을 사용할 때는 특히 인증을 항상 켜두세요.
+- 자동 생성된 강력한 인증 정보 또는 직접 만든 긴 랜덤 비밀번호를 사용하세요.
 - 파일시스템 접근을 제한하려면 `PI_WEB_ALLOWED_ROOTS`를 설정하세요.
 - `.env`, 인증 JSON, TLS 키, 푸시 구독, pi 세션 상태는 절대 커밋하지 마세요.
 
@@ -130,7 +172,7 @@ npm 패키지는 의도적으로 작게 유지됩니다. `package.json#files`는
 
 - `dist/` TypeScript 빌드 출력물
 - `frontend/out/` 정적 UI 내보내기
-- README, 라이선스, 변경 로그, 보안/기여 문서, README 스크린샷
+- 영문/한국어 README, 라이선스, 변경 로그, 보안/기여 문서, 설치 후 안내 스크립트, README 스크린샷
 
 전체 소스 코드, 테스트, 디자인 노트는 GitHub을 통해 배포됩니다.
 

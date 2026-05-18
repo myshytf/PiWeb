@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-43853d.svg)](package.json)
 
+**Language:** English | [한국어](README.ko.md)
+
 A standalone, mobile-friendly web interface for the [`pi` coding agent](https://www.npmjs.com/package/@earendil-works/pi-coding-agent). It runs an HTTP + WebSocket server, serves a static Next.js UI, and lets you drive pi sessions from a browser.
 
 ![pi-web mobile UI](docs/mobile-initial.png)
@@ -28,7 +30,13 @@ npm run build
 npm start -- --cwd /path/to/your/project
 ```
 
-Open the URL printed by the server, usually `http://localhost:9876`.
+Open the URL printed by the server, usually `http://127.0.0.1:9876`.
+
+For a guided one-shot setup that saves your port, credentials, and optional public tunnel:
+
+```bash
+npm start -- setup
+```
 
 On first run, pi-web creates a credentials file at `~/.pi/agent/pi-web-credentials.json` and prints the generated password once. You can also set your own credentials:
 
@@ -42,12 +50,14 @@ Install the scoped npm package:
 
 ```bash
 npm install -g @minyongchoi94/pi-web
+pi-web setup
 pi-web --cwd /path/to/your/project
 ```
 
 Or run without global install:
 
 ```bash
+npx @minyongchoi94/pi-web setup
 npx @minyongchoi94/pi-web --cwd /path/to/your/project
 ```
 
@@ -61,20 +71,28 @@ pi-web --help
 
 | Option | Env var | Default | Description |
 | --- | --- | --- | --- |
+| `setup` | — | — | Guided setup wizard for port, credentials, config file, and tunnel autostart. |
+| `config` | — | — | Print the saved config file. |
+| `--config` | `PI_WEB_CONFIG_FILE` | `~/.pi/agent/pi-web-config.json` | Saved setup config path. |
 | `--port` | `PI_WEB_PORT` | `9876` | HTTP/WebSocket port. |
-| `--host` | `PI_WEB_HOST` | `0.0.0.0` | Bind host. Use `127.0.0.1` for local-only access. |
+| `--host` | `PI_WEB_HOST` | `127.0.0.1` | Bind host. Use `0.0.0.0` for LAN access. |
 | `--cwd` | `PI_WEB_CWD` | current directory | Project directory for pi sessions. |
 | `--agent-dir` | `PI_WEB_AGENT_DIR` | `~/.pi/agent` | pi agent config/session directory. |
+| `--credentials-file` | `PI_WEB_CREDENTIALS_FILE` | `~/.pi/agent/pi-web-credentials.json` | Login credentials file. |
 | `--username` | `PI_WEB_USERNAME` | `piweb` | Login username. |
 | `--password` | `PI_WEB_PASSWORD` | generated | Login password. |
 | `--no-auth` | `PI_WEB_NO_AUTH=1` | auth enabled | Disable auth. Only use on trusted networks. |
-| `--https` | — | off | Serve HTTPS with mkcert files in `~/.pi/certs/`. |
+| `--tunnel` | `PI_WEB_TUNNEL` | saved config / none | Start a public tunnel with `cloudflared` or `ngrok`. |
+| `--no-tunnel` | — | off | Disable saved tunnel autostart for this run. |
+| `--https` | `PI_WEB_HTTPS=1` | off | Serve HTTPS with mkcert files in `~/.pi/certs/`. |
 
 Additional environment variables:
 
 | Env var | Description |
 | --- | --- |
 | `PI_WEB_CREDENTIALS_FILE` | Override the generated credentials file path. |
+| `PI_WEB_CONFIG_FILE` | Override the saved setup config path. |
+| `PI_WEB_TUNNEL` | Start a public tunnel automatically: `cloudflared`, `ngrok`, or `none`. |
 | `PI_WEB_ALLOWED_ORIGINS` | Comma-separated extra origins allowed by API CORS. |
 | `PI_WEB_ALLOWED_ROOTS` | Comma-separated filesystem roots allowed by file APIs. |
 | `PI_WEB_TRUST_PROXY=1` | Trust reverse-proxy IP headers for auth rate limiting. |
@@ -83,18 +101,42 @@ Additional environment variables:
 
 Copy `.env.example` if you want a local template.
 
-## Remote/LAN access
+## Remote, LAN, and public tunnel access
 
-For phone or tablet access on the same network:
+PiWeb is local-only by default (`127.0.0.1`). For phone or tablet access on the same network:
 
 ```bash
 PI_WEB_PASSWORD='use-a-long-random-secret' pi-web --host 0.0.0.0 --port 9876 --cwd .
 ```
 
+For an internet-accessible URL without changing the local bind host, use a tunnel:
+
+```bash
+pi-web --tunnel cloudflared --cwd .
+```
+
+`cloudflared` quick tunnels are the recommended free option. Install it first if needed:
+
+```bash
+brew install cloudflare/cloudflare/cloudflared
+```
+
+Ngrok is also supported if your ngrok account/token is already configured:
+
+```bash
+pi-web --tunnel ngrok --cwd .
+```
+
+To save tunnel autostart, run the setup wizard:
+
+```bash
+pi-web setup
+```
+
 Security notes:
 
-- Keep auth enabled.
-- Use HTTPS, a trusted tunnel, or a reverse proxy for internet access.
+- Keep auth enabled, especially when using a public tunnel.
+- Use strong generated credentials or your own long random password.
 - Set `PI_WEB_ALLOWED_ROOTS` if you want to limit filesystem access.
 - Never commit `.env`, credential JSON, TLS keys, push subscriptions, or pi session state.
 
@@ -129,7 +171,7 @@ The npm package is intentionally small. `package.json#files` publishes only:
 
 - `dist/` TypeScript build output
 - `frontend/out/` static UI export
-- README, license, changelog, security/contributing docs, and the README screenshot
+- English/Korean README files, license, changelog, security/contributing docs, setup postinstall message, and the README screenshot
 
 The full source code, tests, and design notes are distributed through GitHub.
 

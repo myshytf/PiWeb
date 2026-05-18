@@ -41,8 +41,8 @@ gh repo create myshytf/PiWeb --public --source=. --remote=origin --push
 ## 4. Create a GitHub release
 
 ```bash
-git tag v0.2.1
-git push origin v0.2.1
+git tag v0.3.0
+git push origin v0.3.0
 ```
 
 Then create a release from the tag in GitHub's Releases UI.

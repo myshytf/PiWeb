@@ -1283,7 +1283,7 @@ export class PiWebApp {
     }
 
     // Start HTTP+WS server (HTTPS if certs available for push notification support)
-    const bindHost = this.opts.host || "0.0.0.0";
+    const bindHost = this.opts.host || "127.0.0.1";
     const actualPort = await findAvailablePort(bindHost, this.opts.port, 10);
 
     const app = createServer(this);

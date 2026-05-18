@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+
+- Added `pi-web setup`, a guided setup wizard for port, credentials, config file, and tunnel autostart.
+- Added saved config support via `~/.pi/agent/pi-web-config.json` and `PI_WEB_CONFIG_FILE`.
+- Added one-shot public tunnel support with `--tunnel cloudflared` or `--tunnel ngrok`.
+- Changed the default bind host to `127.0.0.1` for safer local-only startup.
+- Added install-time guidance through a lightweight `postinstall` message.
+- Added top-level language selectors to the English and Korean READMEs.
+
 ## 0.2.1
 
 - Renamed the npm package to the available scoped name `@minyongchoi94/pi-web`.

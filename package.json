@@ -1,6 +1,6 @@
 {
   "name": "@minyongchoi94/pi-web",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Standalone web interface for the pi coding agent with HTTP, WebSocket, and a mobile-friendly UI.",
   "type": "module",
   "license": "MIT",
@@ -41,7 +41,8 @@
     "SECURITY.md",
     "README.md",
     "README.ko.md",
-    "LICENSE"
+    "LICENSE",
+    "scripts/postinstall.cjs"
   ],
   "publishConfig": {
     "access": "public"
@@ -63,6 +64,7 @@
     "pack:dry-run": "npm pack --dry-run --ignore-scripts",
     "release:check": "npm run build && npm run pack:dry-run",
     "prepack": "npm run build",
+    "postinstall": "node scripts/postinstall.cjs",
     "clean": "rm -rf dist frontend/out frontend/.next test-results"
   },
   "dependencies": {
